@@ -411,6 +411,7 @@ int main(void)
     Vec3 origin = Zero;
 
     // Render
+#pragma omp parallel for collapse(2) private(i,j) schedule(dynamic,1)
     for (int x = 0; x < WIDTH; x++) {
         for (int y = 0; y < HEIGHT; y++) {
 
@@ -439,11 +440,11 @@ int main(void)
     }
 
     // Output
-    DrawWatermark(data);
+//    DrawWatermark(data);
 
     // Write to file
     printf("tinyray: writing to file!");
-    if (!stbi_write_bmp("output.bmp", WIDTH, HEIGHT, 3, data))
+    if (!stbi_write_bmp("output-parallel.bmp", WIDTH, HEIGHT, 3, data))
         printf("tinyray: failed to write image!");
 
     return 0;
